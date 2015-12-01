@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.augmentum.onlineexamsystem.model.Question">
+
+     <resultMap type="Question" id="questionMap">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="answer_a" property="answerA"/>
+        <result column="answer_b" property="answerB"/>
+        <result column="answer_c" property="answerC"/>
+        <result column="answer_d" property="answerD"/>
+        <result column="correct_answer" property="correctAnswer"/>
+    </resultMap>
+
+    <sql id="conditionSQL">
+       <if test="condition == null and order == 'ASC'">
+            <![CDATA[
+                AND is_delete = 0 ORDER BY id ASC LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+
+       <if test="condition == null and order == 'DSC'">
+            <![CDATA[
+                AND is_delete = 0 ORDER BY id DESC LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+
+       <if test="condition != null and order == 'ASC'">
+            <![CDATA[
+                AND title  LIKE CONCAT(CONCAT('%', #{condition}), '%') AND is_delete = 0 ORDER BY id ASC LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+
+       <if test="condition != null and order == 'DSC'">
+            <![CDATA[
+                AND title  LIKE CONCAT(CONCAT('%', #{condition}), '%') AND is_delete = 0 ORDER BY id DESC LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+   </sql>
+
+    <sql id="conditionCountSQL">
+       <if test="condition == null">
+            <![CDATA[
+                AND is_delete = 0
+            ]]>
+       </if>
+
+       <if test="condition != null">
+            <![CDATA[
+                AND title LIKE CONCAT(CONCAT('%', #{condition}), '%') AND is_delete = 0
+            ]]>
+       </if>
+   </sql>
+
+    <insert id="createQuestion" parameterType="Question" useGeneratedKeys="true" keyProperty="id">
+      <![CDATA[
+      INSERT INTO question(title, answer_a, answer_b, answer_c, answer_d, correct_answer, create_time, update_time)
+                       VALUES(#{title}, #{answerA}, #{answerB}, #{answerC}, #{answerD}, #{correctAnswer}, NOW(), NOW())
+      ]]>
+    </insert>
+
+    <select id="findQuestions" parameterType="map" resultMap="questionMap">
+        <![CDATA[
+            SELECT id, title FROM question WHERE 1 = 1
+        ]]>
+        <include refid="conditionSQL"/>
+    </select>
+
+    <select id="getQuestionByQuestionId" parameterType="int" resultMap="questionMap">
+        <![CDATA[
+            SELECT id, title, answer_a, answer_b, answer_c, answer_d, correct_answer FROM question WHERE id = #{id} AND is_delete = 0
+        ]]>
+    </select>
+
+    <update id="updateQuestionByQuestionId" parameterType="Question">
+       UPDATE question SET title = #{title} , answer_a = #{answerA}, answer_b = #{answerB}, answer_c = #{answerC}, answer_d = #{answerD}, correct_answer = #{correctAnswer} WHERE id = #{id} AND is_delete = 0
+    </update>
+
+    <delete id="deleteQuestionByQuestionId" parameterType="int">
+      UPDATE question SET is_delete = 1 WHERE id = #{id}
+    </delete>
+
+    <update id="deleteQuestionsByQuestionId">
+      UPDATE question SET is_delete = 1 WHERE id IN
+      <foreach collection="array" item="questionIds"  open="(" separator="," close=")">
+        #{questionIds}
+      </foreach>
+    </update>
+
+    <select id="getTotalCount" parameterType="String" resultType="int">
+      SELECT COUNT(id) FROM question WHERE 1 = 1
+      <include refid="conditionCountSQL"/>
+    </select>
+
+    <select id="isQuestionTitleExist" parameterType="String" resultMap="questionMap">
+      SELECT id FROM question WHERE title = #{title} AND is_delete = 0
+    </select>
+</mapper>

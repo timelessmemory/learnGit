@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.augmentum.onlineexamsystem.model.User">
+
+    <resultMap type="User" id="userMap">
+        <id column="id" property="id"/>
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="chinese_name" property="ChineseName"/>
+        <result column="pic" property="pic"/>
+        <result column="gender" property="gender"/>
+        <result column="telephone_number" property="telephoneNumber"/>
+        <result column="email_address" property="emailAddress"/>
+    </resultMap>
+    
+    <resultMap type="Role" id="roleMap">
+      <id column="id" property="id" />
+      <result column="role_name" property="roleName"/>
+    </resultMap>
+
+    <select id="getUserByName" parameterType="String" resultMap="userMap">
+      <![CDATA[
+        SELECT * FROM user WHERE user_name = LOWER(#{userName})
+      ]]>
+    </select>
+    
+    <select id="getUser" parameterType="int" resultMap="userMap">
+      <![CDATA[
+        SELECT * FROM user WHERE id = #{id}
+      ]]>
+    </select>
+    
+    <update id="updatePasswordById" parameterType="map">
+      <![CDATA[
+        UPDATE user SET password = #{password} WHERE id = #{id}
+      ]]>
+    </update>
+
+    <update id="updatePic" parameterType="map">
+      <![CDATA[
+        UPDATE user SET pic = #{path} WHERE id = #{id}
+      ]]>
+    </update>
+
+	<select id="findRoleNameById" parameterType="int" resultMap="roleMap">
+	  SELECT role_name FROM user u JOIN user_role ur ON u.id = ur.user_id JOIN role r ON ur.role_id = r.id where u.id = #{id}
+	</select>
+</mapper>

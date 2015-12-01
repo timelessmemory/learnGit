@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.augmentum.onlineexamsystem.model.Exam">
+
+     <resultMap type="Exam" id="examMap">
+        <id column="id" property="id" />
+        <result column="exam_name" property="examName" />
+        <result column="exam_description" property="description" />
+        <result column="effective_time" property="effectiveTime" />
+        <result column="single_question_score" property="questionPoints" />
+        <result column="question_quantity" property="questionQuantity" />
+        <result column="duration" property="duration" />
+        <result column="total_score" property="totalScore" />
+        <result column="creator" property="creator" />
+        <result column="pass_criteria" property="passCriteria" />
+        <result column="is_draft" property="isDraft" />
+    </resultMap>
+
+    <sql id="conditionSQL">
+    
+       <if test="nameCondition == null and fromDate == null and toDate == null">
+            <![CDATA[
+                ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+
+       <if test="nameCondition != null and fromDate == null and toDate == null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%') ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+       <if test="nameCondition == null and fromDate != null and toDate == null">
+            <![CDATA[
+                AND effective_time BETWEEN CONCAT(#{fromDate},' 00:00:00') AND CONCAT(#{fromDate},' 23:59:59') ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+       <if test="nameCondition == null and fromDate == null and toDate != null">
+            <![CDATA[
+                AND effective_time BETWEEN CONCAT(#{toDate},' 00:00:00') AND CONCAT(#{toDate},' 23:59:59') ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+       <if test="nameCondition != null and fromDate != null and toDate == null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%') AND effective_time BETWEEN CONCAT(#{fromDate},' 00:00:00') AND CONCAT(#{fromDate},' 23:59:59') ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+       <if test="nameCondition != null and fromDate == null and toDate != null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%') AND effective_time between CONCAT(#{toDate},' 00:00:00') AND CONCAT(#{toDate},' 23:59:59') ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+       <if test="nameCondition == null and fromDate != null and toDate != null">
+            <![CDATA[
+                AND effective_time BETWEEN CONCAT(#{fromDate},' 00:00:00') AND CONCAT(#{toDate},' 23:59:59') ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+       <if test="nameCondition != null and fromDate != null and toDate != null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%') AND effective_time BETWEEN CONCAT(#{fromDate},' 00:00:00') AND CONCAT(#{toDate},' 23:59:59') ORDER BY ${firstColumn} ${firstOrder}, ${secondColumn} ${secondOrder}, ${thirdColumn} ${thirdOrder} LIMIT #{offset}, #{pageSize}
+            ]]>
+       </if>
+    </sql>
+
+    <sql id="conditionCountSQL">
+       <if test="nameCondition == null and fromDate == null and toDate == null">
+            <![CDATA[
+                AND 2 = 2
+            ]]>
+       </if>
+       <if test="nameCondition != null and fromDate == null and toDate == null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%')
+            ]]>
+       </if>
+       <if test="nameCondition == null and fromDate != null and toDate == null">
+            <![CDATA[
+                AND effective_time between CONCAT(#{fromDate},' 00:00:00') and CONCAT(#{fromDate},' 23:59:59')
+            ]]>
+       </if>
+       <if test="nameCondition == null and fromDate == null and toDate != null">
+            <![CDATA[
+                AND effective_time between CONCAT(#{toDate},' 00:00:00') and CONCAT(#{toDate},' 23:59:59')
+            ]]>
+       </if>
+       <if test="nameCondition != null and fromDate != null and toDate == null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%') AND effective_time between CONCAT(#{fromDate},' 00:00:00') and CONCAT(#{fromDate},' 23:59:59')
+            ]]>
+       </if>
+       <if test="nameCondition != null and fromDate == null and toDate != null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%') AND effective_time between CONCAT(#{toDate},' 00:00:00') and CONCAT(#{toDate},' 23:59:59')
+            ]]>
+       </if>
+       <if test="nameCondition == null and fromDate != null and toDate != null">
+            <![CDATA[
+                AND effective_time between CONCAT(#{fromDate},' 00:00:00') and CONCAT(#{toDate},' 23:59:59')
+            ]]>
+       </if>
+       <if test="nameCondition != null and fromDate != null and toDate != null">
+            <![CDATA[
+                AND exam_name LIKE CONCAT(CONCAT('%', #{nameCondition}), '%') AND effective_time between CONCAT(#{fromDate},' 00:00:00') and CONCAT(#{toDate},' 23:59:59')
+            ]]>
+       </if>
+   </sql>
+
+    <insert id="createExam" parameterType="Exam" useGeneratedKeys="true" keyProperty="id">
+    <![CDATA[
+      INSERT INTO exam(exam_name, exam_description, single_question_score, question_quantity, duration, total_score, effective_time, create_time, update_time, creator, pass_criteria)
+      VALUES(#{examName}, #{description}, #{questionPoints}, #{questionQuantity}, #{duration}, #{totalScore}, #{effectiveTime}, NOW(), NOW(), #{creator}, #{passCriteria})
+    ]]>
+    </insert>
+
+    <insert id="createExamInsertQuestion" parameterType="map">
+    <![CDATA[
+      INSERT INTO exam_question(exam_id, question_id, question_title, question_answer_a, question_answer_b, question_answer_c, question_answer_d, correct_answer)
+      SELECT #{id}, id, title, answer_a, answer_b, answer_c, answer_d, correct_answer FROM question WHERE is_delete = 0 ORDER BY rand() LIMIT #{quantity};
+    ]]>
+    </insert>
+
+    <update id="asDraft" parameterType="int">
+      UPDATE exam SET is_draft = 1 where id = #{id}
+    </update>
+    
+    <update id="asNotDraft" parameterType="int">
+      UPDATE exam SET is_draft = 0 where id = #{id}
+    </update>
+
+    <select id="findExams" parameterType="map" resultMap="examMap">
+        <![CDATA[
+            SELECT id, is_draft, exam_name, effective_time, duration, creator FROM exam WHERE 1 = 1 AND is_deleted = 0
+        ]]>
+        <include refid="conditionSQL"/>
+    </select>
+
+    <select id="getTotalCountByCondition" parameterType="map" resultType="int">
+      SELECT COUNT(id) FROM exam WHERE 1 = 1 AND is_deleted = 0
+      <include refid="conditionCountSQL"/>
+    </select>
+
+    <select id="getQuestionCount" resultType="int">
+      SELECT COUNT(id) FROM question
+    </select>
+
+    <select id="getExamById" parameterType="int" resultMap="examMap">
+      SELECT id, exam_name, exam_description, single_question_score, question_quantity, duration, total_score, effective_time, creator, pass_criteria, is_draft from exam where id = #{id} AND is_deleted = 0
+    </select>
+    
+    <update id="updateExam" parameterType="Exam">
+      UPDATE exam SET exam_name = #{examName}, exam_description = #{description}, single_question_score = #{questionPoints}, question_quantity = #{questionQuantity}, duration = #{duration},
+      total_score = #{totalScore}, effective_time = #{effectiveTime}, pass_criteria = #{passCriteria} WHERE id = #{id}
+    </update>
+    
+    <!-- <delete id="deleteExamAndQuesByExamId" parameterType="int">
+      DELETE FROM exam_question WHERE exam_id = #{id}
+    </delete> -->
+    <update id="deleteExamByExamId" parameterType="int">
+      UPDATE exam SET is_deleted = 1 WHERE id = #{id}
+    </update>
+    
+    <!-- <delete id="deleteExamsAndQuesByExamIds">
+      DELETE FROM exam_question WHERE exam_id IN
+      <foreach collection="array" item="examIds"  open="(" separator="," close=")">
+        #{examIds}
+      </foreach>
+    </delete> -->
+    <update id="deleteExamsByExamIds">
+      UPDATE exam SET is_deleted = 1 WHERE id IN
+      <foreach collection="array" item="examIds"  open="(" separator="," close=")">
+        #{examIds}
+      </foreach>
+    </update>
+    
+    <delete id="deleteExistExamQuestion" parameterType="map">
+      DELETE FROM exam_question where exam_id = #{id} order by rand() limit #{number}
+    </delete>
+    
+    <insert id="insertExamQuestionEdit" parameterType="map">
+      INSERT INTO exam_question(exam_id, question_id, question_title, question_answer_a, question_answer_b, question_answer_c, question_answer_d, correct_answer)
+      SELECT #{id}, id, title, answer_a, answer_b, answer_c, answer_d, correct_answer FROM question WHERE is_delete = 0 AND id NOT IN (SELECT question_id FROM exam_question WHERE exam_id = #{id}) ORDER BY rand() LIMIT #{number}
+    </insert>
+</mapper>

@@ -1,0 +1,206 @@
+::-webkit-input-placeholder {
+    color: #2E4358;
+    text-overflow: ellipsis;
+}
+
+.whole {
+    position: relative;
+    margin: 0 auto;
+    width: 1300px;
+    height: 700px;
+}
+
+.login-left {
+    position: absolute;
+    top: 300px;
+    left: 170px;
+}
+
+.login-logo {
+    height: 90px;
+    width: 180px;
+    background-image: url(images/LOGO_Web_Login_90x180.png);
+}
+
+.login-system-title {
+    height: 30px;
+    width: 380px;
+    margin-top: 50px;
+    font-size: 30px;
+    line-height: 30px;
+    font-weight: Bold;
+    color: #2E4358;
+    text-align: left;
+}
+
+.login-wel {
+    position: absolute;
+    top: 106px;
+    right: 170px;
+    width: 400px;
+    height: 20px;
+    text-align: left;
+    color: #2E4358;
+    font-size: 24px;
+}
+
+.login-form {
+    border: 1px solid;
+    position: absolute;
+    width: 400px;
+    height: 320px;
+    top: 150px;
+    right: 170px;
+    border-radius: 5px;
+    background-color: #2E4358;
+}
+
+.login-footer {
+    border-top: 1px solid #2E4358;
+    position: absolute;
+    bottom: 5px;
+    width: 1300px;
+    height: 110px;
+}
+
+.login-footer div {
+    margin-top: 10px;
+    color: #2E4358;
+    font-size: 12px;
+}
+
+.login-error-message {
+    background-color: #FCCB9B;
+    border: 1px solid #FFF;
+    width: 300px;
+    height: 20px;
+    line-height: 20px;
+    margin: 0 auto;
+    margin-top: 30px;
+    font-size: 12px;
+    color: #FF0000;
+    text-align: left;
+}
+
+.login-user-name {
+    position: relative;
+    width: 300px;
+    height: 35px;
+    float: left;
+    margin-left: 50px;
+    background-color: #FFF;
+    border-radius: 3px;
+}
+
+.login-user-name img {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+    left: 20px;
+    overflow: auto;
+    margin: auto;
+    top: 0; 
+    bottom: 0;
+}
+
+.login-user-name input, .login-password input {
+    position: absolute;
+    border: 0px;
+    width: 245px;
+    height: 35px;
+    left: 50px;
+    font-size: 14px;
+    color: #9D9D9D;
+    text-indent: 3px;
+    margin: auto;
+    top: 0; 
+    bottom: 0;
+    outline: none;
+}
+
+.login-password {
+    float: left;
+    margin-left: 50px;
+    position: relative;
+    width: 300px;
+    height: 35px;
+    background-color: #FFF;
+    border-radius: 3px;
+}
+
+.login-password img {
+    position: absolute;
+    width: 15px;
+    height: 20px;
+    top: 7.5px;
+    left: 20px;
+    margin: auto;
+      top: 0; bottom: 0;
+}
+
+.login-login {
+    width: 300px;
+    height: 35px;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-color: #FFF;
+    border-radius: 3px;
+    background-color: #FE9901;
+    color: #FFF;
+    font-size: 20px;
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
+}
+
+.login-forget {
+    width: 300px;
+    height: 12px;
+    margin: 0 auto;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #FFF;
+}
+
+.login-forget-left {
+    float: left;
+}
+
+.login-forget-left input {
+    height: 12px;
+    line-height: 12px;
+}
+
+.login-forget-left span {
+    margin-left: 10px;
+    height: 12px;
+    line-height: 12px;
+}
+
+.login-forget-right {
+    float: right;
+    height: 12px;
+}
+
+.login-name-line {
+    margin-top: 10px;
+    height: 35px;
+    width: 100%;
+}
+
+.login-password-line {
+    margin-top: 20px;
+    height: 35px;
+    width: 100%;
+}
+
+.error-icon {
+    display: none;
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 7.5px;
+    background-image: url(images/ICN_Client_Login_Wrong_20X20.png);
+}
